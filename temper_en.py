@@ -1,116 +1,116 @@
 # =========================================================================
-#  지역별 기온 정보를 확인하고 옷차림을 추천해주는 프로그램
+#  A program to check temperature information by region and recommend clothing
 # =========================================================================
-# 1)날씨정보 가져오기
+# 1) Fetching weather information
 import requests
 import datetime
 
-# 기상청 API URL
+# Weather service API URL
 weather_url = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?"
 
-# 일반인증키 (인코딩된 값)
+# General authentication key (encoded value)
 encoding_key = "Cvzl0n5R3aZ7Jtzmam8s6AcplvKGhMhWZxouzD12WqweqwGuLWpmczItRO8cOdT5bhHkmUdKDIb3vh79f7ulmw%3D%3D" 
 
-# 기준이 되는 날짜 (오늘 날짜를 YYYYMMDD 형식으로)
+# Base date (today's date in YYYYMMDD format)
 base_date = datetime.datetime.today().strftime("%Y%m%d")  
 
-# 기준이 되는 시간 (기본값 0800, 8시)
+# Base time (default 0800, 8 AM)
 base_time = "0800"   
 
-# 사용자에게 지역 선택을 위한 숫자 입력 요청. 유효한 값 입력하도록 요청
+# Request user input for region selection. Prompt them to enter a valid number.
 while True:
     try:
         area = int(input(
-            "1  서울     2  부산     3  대구     4  인천\n"
-            "5  광주     6  대전     7  울산     8  세종\n"
-            "9  경기도   10 충청북도 11 충청남도 12 전라남도\n"
-            "13 전라북도 14 경상북도 15 경상남도 16 제주도\n"
-            "17 강원도\n"
-            "\n해당하는 지역의 숫자를 입력하세요: "
+            "1  Seoul     2  Busan     3  Daegu     4  Incheon\n"
+            "5  Gwangju   6  Daejeon   7  Ulsan     8  Sejong\n"
+            "9  Gyeonggi  10 Chungbuk  11 Chungnam  12 Jeonnam\n"
+            "13 Jeonbuk   14 Gyeongbuk 15 Gyeongnam 16 Jeju\n"
+            "17 Gangwon\n"
+            "\nEnter the number corresponding to your region: "
         ))
         print()
-        1
-        # 입력된 값이 1에서 17 사이일 경우 반복문 종료
+        
+        # Exit the loop if a number between 1 and 17 is entered
         if 1 <= area <= 17:
             break
         else:
-            # 유효하지 않은 숫자가 입력된 경우 메시지 출력
-            print("유효한 숫자를 입력해주세요.") 
+            # Display a message if an invalid number is entered
+            print("Please enter a valid number.") 
     except ValueError:
-        # 숫자가 아닌 값이 입력된 경우 메시지 출력
-        print("유효한 숫자를 입력해주세요.")
+        # Display a message if a non-numeric value is entered
+        print("Please enter a valid number.")
 
-# area 값이 유효한 경우 지역에 해당하는 위도와 경도 값을 설정
+# If the area value is valid, set latitude and longitude coordinates corresponding to the region
 if area == 1:
     nx = "59"
-    ny = "126" # 서울 위도 경도 좌표
-    region = "서울"
+    ny = "126"  # Latitude and longitude for Seoul
+    region = "Seoul"
 elif area == 2:
     nx = "98"
-    ny = "76" # 부산 위도 경도 좌표
-    region = "부산"
+    ny = "76"   # Latitude and longitude for Busan
+    region = "Busan"
 elif area == 3:
     nx = "89"
-    ny = "90" # 대구 위도 경도 좌표
-    region = "대구"
+    ny = "90"   # Latitude and longitude for Daegu
+    region = "Daegu"
 elif area == 4:
     nx = "55"
-    ny = "124" # 인천 위도 경도 좌표
-    region = "인천"
+    ny = "124"  # Latitude and longitude for Incheon
+    region = "Incheon"
 elif area == 5:
     nx = "58"
-    ny = "74" # 광주 위도 경도 좌표
-    region = "광주"
+    ny = "74"   # Latitude and longitude for Gwangju
+    region = "Gwangju"
 elif area == 6:
     nx = "67"
-    ny = "100" # 대전 위도 경도 좌표
-    region = "대전"
+    ny = "100"  # Latitude and longitude for Daejeon
+    region = "Daejeon"
 elif area == 7:
     nx = "102"
-    ny = "84" # 울산 위도 경도 좌표
-    region = "울산"
+    ny = "84"   # Latitude and longitude for Ulsan
+    region = "Ulsan"
 elif area == 8:
     nx = "66"
-    ny = "103" # 세종 위도 경도 좌표
-    region = "세종"
+    ny = "103"  # Latitude and longitude for Sejong
+    region = "Sejong"
 elif area == 9:
     nx = "60"
-    ny = "120" # 경기도 위도 경도 좌표
-    region = "경기도"
+    ny = "120"  # Latitude and longitude for Gyeonggi-do
+    region = "Gyeonggi"
 elif area == 10:
     nx = "69"
-    ny = "107" # 충청북도 위도 경도 좌표
-    region = "충청북도"
+    ny = "107"  # Latitude and longitude for Chungbuk
+    region = "Chungbuk"
 elif area == 11:
     nx = "68"
-    ny = "100" # 충청남도 위도 경도 좌표
-    region = "충청남도"
+    ny = "100"  # Latitude and longitude for Chungnam
+    region = "Chungnam"
 elif area == 12:
     nx = "51"
-    ny = "67" # 전라남도 위도 경도 좌표
-    region = "전라남도"
+    ny = "67"   # Latitude and longitude for Jeonnam
+    region = "Jeonnam"
 elif area == 13:
     nx = "63"
-    ny = "89" # 전라북도 위도 경도 좌표
-    region = "전라북도"
+    ny = "89"   # Latitude and longitude for Jeonbuk
+    region = "Jeonbuk"
 elif area == 14:
     nx = "87"
-    ny = "106" # 경상북도 위도 경도 좌표
-    region = "경상북도"
+    ny = "106"  # Latitude and longitude for Gyeongbuk
+    region = "Gyeongbuk"
 elif area == 15:
     nx = "90"
-    ny = "77" # 경상남도 위도 경도 좌표
-    region = "경상남도"
+    ny = "77"   # Latitude and longitude for Gyeongnam
+    region = "Gyeongnam"
 elif area == 16:
     nx = "52"
-    ny = "38" # 제주도 위도 경도 좌표
-    region = "제주도"
+    ny = "38"   # Latitude and longitude for Jeju
+    region = "Jeju"
 elif area == 17:
     nx = "73"
-    ny = "134" # 강원도 위도 경도 좌표
-    region = "강원도"
+    ny = "134"  # Latitude and longitude for Gangwon
+    region = "Gangwon"
 
-# API 요청에 필요한 데이터 구성
+# Construct the data required for the API request
 load_data = "serviceKey=" + encoding_key + "&" + \
           "dataType=json" + "&" + \
           "base_date=" + base_date + "&" + \
@@ -118,23 +118,23 @@ load_data = "serviceKey=" + encoding_key + "&" + \
           "nx=" + nx + "&" + \
           "ny=" + ny
 
-# 응답 데이터를 저장할 딕셔너리 생성
+# Create a dictionary to store the response data
 data = dict()
 data['date'] = base_date
 weather = dict()
 
-# 날씨 정보 요청
+# Request weather information
 res = requests.get(weather_url + load_data)
-# API 응답에서 필요한 데이터 추출
+# Extract necessary data from the API response
 items = res.json().get('response').get('body').get('items')
 for item in items['item']:
-    # 온도(TMP) 정보 가져오기
+    # Fetch temperature (TMP) information
     if item['category'] == 'TMP':
         weather['tmp'] = item['fcstValue']
 
 data['weather'] = weather
 
-# 현재 기온 정보 추출
+# Extract current temperature information
 items1 = res.json().get('response').get('body').get('items')
 items1['item']
 for item in items1['item']:
@@ -142,65 +142,65 @@ for item in items1['item']:
         current_temperature = int(item['fcstValue'])
 
 # ============================================================================================================================================
-# 네이버 쇼핑 검색 OpenAPI 사용하기
+# Using Naver Shopping Search OpenAPI
 # ============================================================================================================================================
 
-# 네이버 쇼핑 검색을 위한 함수 정의
+# Define a function for Naver shopping search
 def naver_shop_search(query, display):
-    # 네이버 애플리케이션의 인증 헤더 설정
+    # Set the authentication headers for the Naver application
     headers = {
-        "X-Naver-Client-Id": "3JKKhUYF8FQCQxm0owkD",    # 네이버 애플리케이션의 client_id
-        "X-Naver-Client-Secret": "TPonc2ZJLB"           # 네이버 애플리케이션의 client_secret 키 설정
+        "X-Naver-Client-Id": "3JKKhUYF8FQCQxm0owkD",    # client_id of Naver application
+        "X-Naver-Client-Secret": "TPonc2ZJLB"           # client_secret key of Naver application
     }
-    # 네이버 쇼핑 검색 요청 파라미터 설정
+    # Set the request parameters for Naver shopping search
     params = {
         "query": query,                                 
         "display": display,         
         "sort": "date"
     }
-    # 네이버 쇼핑 검색 API URL
+    # Naver Shopping Search API URL
     naver_shop_url = "https://openapi.naver.com/v1/search/shop.json" 
-    # 네이버 쇼핑 검색 요청   
+    # Send Naver Shopping search request   
     res = requests.get(naver_shop_url, headers=headers, params=params)   
     if res.status_code == 200:
-        # 네이버 쇼핑 검색 결과 확인
+        # Check the Naver Shopping search results
         items = res.json().get('items')                     
-        # 각 항목에서 'link' 필드만 추출하여 리스트로 반환
+        # Extract only the 'link' field from each item and return as a list
         links = [item['link'] for item in items]
         return links
     return []
 
-# 기온에 따른 옷차림 추천 및 검색어 설정
+# Set clothing recommendations based on temperature and define search terms
 if current_temperature >= 23:
-    temperature = "민소매, 반바지, 반팔, 스커트"
+    temperature = "Sleeveless, Shorts, T-shirt, Skirt"
 elif 20 <= current_temperature < 23:
-    temperature = "반팔, 얇은 셔츠, 반바지, 면바지"
+    temperature = "T-shirt, Light shirt, Shorts, Cotton pants"
 elif 17 <= current_temperature < 20:
-    temperature = "얇은 가디건, 긴팔티, 면바지, 청바지"
+    temperature = "Light cardigan, Long-sleeved shirt, Cotton pants, Jeans"
 elif 12 <= current_temperature < 17:
-    temperature = "얇은 니트, 가디건, 맨투맨, 얇은 자켓, 면바지, 청바지"    
+    temperature = "Light knit, Cardigan, Sweatshirt, Light jacket, Cotton pants, Jeans"    
 elif 9 <= current_temperature < 12:
-    temperature = "자켓, 가디건, 야상, 맨투맨, 니트스타킹, 청바지, 면바지"
+    temperature = "Jacket, Cardigan, Military jacket, Sweatshirt, Knit stockings, Jeans, Cotton pants"
 elif 5 <= current_temperature < 9:
-    temperature = "코트, 히트텍, 니트, 청바지, 레깅스"
+    temperature = "Coat, Heattech, Knit, Jeans, Leggings"
 else:
-    temperature = "패딩, 두꺼운 코트, 기모제품, 목도리"
+    temperature = "Padded jacket, Thick coat, Fleece items, Scarf"
 
-# 추천 옷차림들을 쉼표로 분리해서 검색어 리스트를 생성
+# Split recommended clothing into search terms
 search_terms = temperature.split(", ")
 
-# 출력: 지역, 현재 기온, 추천 옷차림, 구매처 링크
-print(f"지역: {region}\n")
-print(f"현재 기온: {current_temperature}도\n")
-print(f"추천 옷차림: {temperature}\n")
-print("해당 옷들의 구매처 링크는 다음과 같습니다")
+# Output: Region, current temperature, recommended clothing, and shopping links
+print(f"Region: {region}\n")
+print(f"Current temperature: {current_temperature}°C\n")
+print(f"Recommended clothing: {temperature}\n")
+print("Links to purchase these items are as follows:")
 print("----------------------------------------")
 
-# 각 검색어에 대해 네이버 쇼핑 검색 수행
+# Perform Naver shopping search for each term
 for term in search_terms:
-    # 각 검색어에 대해 2개의 결과 링크 가져오기
+    # Get 2 result links for each search term
     result_links = naver_shop_search(term, 2)  
-    print(f"{term} 검색 결과")
+    print(f"Search results for {term}")
     for link in result_links:
         print(link)
     print()
